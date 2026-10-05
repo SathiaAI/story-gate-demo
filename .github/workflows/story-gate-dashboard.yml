@@ -1,0 +1,50 @@
+# managed by story-gate 0.6.2 - re-run `gate.py install` to update; local edits are overwritten
+name: story-gate-dashboard
+# Runs only the default branch's copy of this file and of story-gate (schedule, workflow_run and default-branch
+# pushes always use the default branch). Records on other branches are read as data, never executed.
+on:
+  schedule:
+    - cron: "11,41 * * * *"
+  workflow_run:
+    workflows: [story-gate]
+    types: [completed]
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+concurrency:
+  group: story-gate-dashboard
+  cancel-in-progress: false
+jobs:
+  dashboard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch || github.ref_name }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: build
+        env:
+          SG_DEFAULT_BRANCH: ${{ github.event.repository.default_branch || github.ref_name }}
+          STORY_GATE_ROOT: ${{ github.workspace }}
+        run: python3 .story-gate/gate.py dashboard --out "$RUNNER_TEMP/sg-dashboard"
+      - id: report
+        uses: actions/upload-artifact@v4
+        with:
+          name: story-gate-dashboard
+          path: ${{ runner.temp }}/sg-dashboard/dashboard.html
+          retention-days: 30
+      - name: publish
+        env:
+          STORY_GATE_ROOT: ${{ github.workspace }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 .story-gate/gate.py dashboard --from-json "$RUNNER_TEMP/sg-dashboard/dashboard.json" --publish --artifact-url "${{ steps.report.outputs.artifact-url }}" --out "$RUNNER_TEMP/sg-dashboard"
+      - name: say so if the refresh failed (the last good snapshot stays)
+        if: failure()
+        env:
+          STORY_GATE_ROOT: ${{ github.workspace }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 .story-gate/gate.py dashboard --report-failure
