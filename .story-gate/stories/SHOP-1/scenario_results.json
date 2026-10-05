@@ -1,0 +1,57 @@
+{
+ "story": "SHOP-1",
+ "results": {
+  "3 items cost 6.00": {
+   "spec": "36862a970dcc92de",
+   "passed": true,
+   "exit_code": 0,
+   "expect_exit": 0,
+   "output_matched": true,
+   "note": "",
+   "seconds": 0.0,
+   "fingerprint": "9548762d4cf1f5b1",
+   "source": "local",
+   "at": "2026-10-05T21:48:22Z",
+   "output_tail": "6.00\n"
+  },
+  "9 items pay full price": {
+   "spec": "3c1c322e8e0e91c7",
+   "passed": true,
+   "exit_code": 0,
+   "expect_exit": 0,
+   "output_matched": true,
+   "note": "",
+   "seconds": 0.0,
+   "fingerprint": "9548762d4cf1f5b1",
+   "source": "local",
+   "at": "2026-10-05T21:48:22Z",
+   "output_tail": "36.00\n"
+  },
+  "12 items get the discount": {
+   "spec": "8420299158ee9ea7",
+   "passed": true,
+   "exit_code": 0,
+   "expect_exit": 0,
+   "output_matched": true,
+   "note": "",
+   "seconds": 0.0,
+   "fingerprint": "9548762d4cf1f5b1",
+   "source": "local",
+   "at": "2026-10-05T21:48:22Z",
+   "output_tail": "43.20\n"
+  },
+  "exactly 10 items get the discount": {
+   "spec": "8ada5fe7b9bb042a",
+   "passed": true,
+   "exit_code": 0,
+   "expect_exit": 0,
+   "output_matched": true,
+   "note": "",
+   "seconds": 0.0,
+   "fingerprint": "9548762d4cf1f5b1",
+   "source": "local",
+   "at": "2026-10-05T21:48:22Z",
+   "output_tail": "36.00\n"
+  }
+ }
+}

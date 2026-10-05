@@ -1,0 +1,2 @@
+{"id": "L-SHOP-1-209471481", "story": "SHOP-1", "type": "none", "summary": "nothing new learnt (staged demo story)", "root_cause": "", "rule": "", "tags": [], "client": "", "at": "2026-10-05T14:11:11Z"}
+{"id": "L-SHOP-1-236689861", "story": "SHOP-1", "type": "error", "summary": "a boundary in the story (10 or more) was coded as more than 10", "root_cause": "the unit tests tried 9 and 12 items but not exactly 10", "rule": "test the exact boundary number a story names", "tags": [], "client": "", "at": "2026-10-05T21:44:49Z"}

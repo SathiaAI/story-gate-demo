@@ -1,0 +1,8 @@
+{
+ "schema": 1,
+ "client": "claude-code",
+ "model": "claude-opus",
+ "branch": "story/SHOP-1-bulk-discount",
+ "claimed_at": "2026-10-05T14:07:36Z",
+ "at": "2026-10-05T14:07:36Z"
+}

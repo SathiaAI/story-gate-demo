@@ -1,0 +1,69 @@
+{
+ "story": "SHOP-1",
+ "scenarios": [
+  {
+   "name": "3 items cost 6.00",
+   "acs": [
+    "AC-1"
+   ],
+   "argv": [
+    "python",
+    "price.py",
+    "3",
+    "2.00"
+   ],
+   "expect_exit": 0,
+   "expect_output": "^6\\.00$",
+   "timeout": 120,
+   "local_only": ""
+  },
+  {
+   "name": "9 items pay full price",
+   "acs": [
+    "AC-2"
+   ],
+   "argv": [
+    "python",
+    "price.py",
+    "9",
+    "4.00"
+   ],
+   "expect_exit": 0,
+   "expect_output": "^36\\.00$",
+   "timeout": 120,
+   "local_only": ""
+  },
+  {
+   "name": "12 items get the discount",
+   "acs": [
+    "AC-2"
+   ],
+   "argv": [
+    "python",
+    "price.py",
+    "12",
+    "4.00"
+   ],
+   "expect_exit": 0,
+   "expect_output": "^43\\.20$",
+   "timeout": 120,
+   "local_only": ""
+  },
+  {
+   "name": "exactly 10 items get the discount",
+   "acs": [
+    "AC-2"
+   ],
+   "argv": [
+    "python",
+    "price.py",
+    "10",
+    "4.00"
+   ],
+   "expect_exit": 0,
+   "expect_output": "^36\\.00$",
+   "timeout": 120,
+   "local_only": ""
+  }
+ ]
+}
