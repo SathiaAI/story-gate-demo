@@ -9,9 +9,9 @@
    "output_matched": true,
    "note": "",
    "seconds": 0.0,
-   "fingerprint": "2060655afb54e09c",
+   "fingerprint": "9548762d4cf1f5b1",
    "source": "local",
-   "at": "2026-10-05T21:44:49Z",
+   "at": "2026-10-05T21:48:22Z",
    "output_tail": "6.00\n"
   },
   "9 items pay full price": {
@@ -22,9 +22,9 @@
    "output_matched": true,
    "note": "",
    "seconds": 0.0,
-   "fingerprint": "2060655afb54e09c",
+   "fingerprint": "9548762d4cf1f5b1",
    "source": "local",
-   "at": "2026-10-05T21:44:49Z",
+   "at": "2026-10-05T21:48:22Z",
    "output_tail": "36.00\n"
   },
   "12 items get the discount": {
@@ -35,9 +35,9 @@
    "output_matched": true,
    "note": "",
    "seconds": 0.0,
-   "fingerprint": "2060655afb54e09c",
+   "fingerprint": "9548762d4cf1f5b1",
    "source": "local",
-   "at": "2026-10-05T21:44:49Z",
+   "at": "2026-10-05T21:48:22Z",
    "output_tail": "43.20\n"
   },
   "exactly 10 items get the discount": {
@@ -48,9 +48,9 @@
    "output_matched": true,
    "note": "",
    "seconds": 0.0,
-   "fingerprint": "2060655afb54e09c",
+   "fingerprint": "9548762d4cf1f5b1",
    "source": "local",
-   "at": "2026-10-05T21:44:49Z",
+   "at": "2026-10-05T21:48:22Z",
    "output_tail": "36.00\n"
   }
  }
