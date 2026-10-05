@@ -1,7 +1,7 @@
 # Handoff: SHOP-1
 
 ## What changed
-`total()` in price.py now takes 10% off orders of 10 or more items.
+`total()` in price.py now takes 10% off orders of 10 or more items (`qty >= 10`, so exactly 10 counts).
 
 ## Interfaces and contracts
 `total(qty, unit)` keeps its signature. It returns a number; the command line prints it with 2 decimals.

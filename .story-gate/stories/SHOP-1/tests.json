@@ -41,7 +41,8 @@
    "not_applicable": {},
    "test_refs": [
     "test_big_order_gets_ten_percent_off",
-    "test_small_order_pays_full_price"
+    "test_small_order_pays_full_price",
+    "test_exactly_ten_items_get_the_discount"
    ]
   }
  ],

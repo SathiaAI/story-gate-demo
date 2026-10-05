@@ -19,6 +19,9 @@ class TestBulkDiscount(unittest.TestCase):
     def test_big_order_gets_ten_percent_off(self):
         self.assertAlmostEqual(total(12, 4.00), 43.20)
 
+    def test_exactly_ten_items_get_the_discount(self):
+        self.assertAlmostEqual(total(10, 4.00), 36.00)
+
     def test_small_order_pays_full_price(self):
         self.assertAlmostEqual(total(9, 4.00), 36.00)
 

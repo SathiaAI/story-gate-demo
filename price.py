@@ -7,7 +7,7 @@ def total(qty, unit):
     if qty < 0 or unit < 0:
         raise ValueError("quantity and price can't be negative")
     t = qty * unit
-    if qty > 10:
+    if qty >= 10:
         t = t * 0.9
     return t
 
