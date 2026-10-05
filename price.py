@@ -3,10 +3,13 @@ import sys
 
 
 def total(qty, unit):
-    """Order total: quantity times unit price."""
+    """Order total: quantity times unit price. Orders of 10 or more items get 10% off."""
     if qty < 0 or unit < 0:
         raise ValueError("quantity and price can't be negative")
-    return qty * unit
+    t = qty * unit
+    if qty > 10:
+        t = t * 0.9
+    return t
 
 
 if __name__ == "__main__":

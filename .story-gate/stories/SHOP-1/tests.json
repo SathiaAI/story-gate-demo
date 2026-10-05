@@ -1,0 +1,46 @@
+{
+ "story": "SHOP-1",
+ "acceptance_criteria": [
+  {
+   "id": "AC-1",
+   "text": "The total is the quantity times the unit price.",
+   "positive": [
+    "3 items at 2.00 cost 6.00"
+   ],
+   "negative": [
+    "a negative quantity is refused"
+   ],
+   "edge": [
+    "0 items cost 0"
+   ],
+   "regression": [
+    "existing totals don't change"
+   ],
+   "not_applicable": {},
+   "test_refs": [
+    "tests/test_price.py::TestTotal"
+   ]
+  },
+  {
+   "id": "AC-2",
+   "text": "Orders of 10 or more items get 10% off the total.",
+   "positive": [
+    "12 items at 4.00 cost 43.20"
+   ],
+   "negative": [
+    "9 items get no discount"
+   ],
+   "edge": [
+    "exactly 10 items get the discount"
+   ],
+   "regression": [
+    "orders under 10 items pay full price"
+   ],
+   "not_applicable": {},
+   "test_refs": [
+    "tests/test_price.py::TestBulkDiscount"
+   ]
+  }
+ ],
+ "proposed_missing_acs": []
+}
