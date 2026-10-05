@@ -1,6 +1,6 @@
 {
  "version": 1,
- "mode": "warn",
+ "mode": "enforce",
  "enforce_points": [],
  "accept_concerns": false,
  "story_id_pattern": "[A-Z][A-Z0-9]+-[0-9]+",
@@ -11,7 +11,7 @@
   "docs/**/*.md",
   "*.md"
  ],
- "test_command": "",
+ "test_command": "python -m unittest discover -s tests -t .",
  "junit_path": "",
  "test_globs": [
   "**/test_*.py",
