@@ -1,0 +1,111 @@
+# managed by story-gate 0.6.2 - re-run `gate.py install` to update; local edits are overwritten
+name: story-gate
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review, labeled, unlabeled]
+  pull_request_review:
+    types: [submitted, edited, dismissed]
+permissions:
+  contents: read
+concurrency:
+  group: story-gate-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  tests:
+    # Runs the PR's code with the BASE branch's pinned test command. No secrets here.
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: run pinned tests
+        env:
+          BASE: origin/${{ github.event.pull_request.base.ref }}
+          SG_BASE_REF: ${{ github.event.pull_request.base.ref }}
+          SG_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          STORY_GATE_ROOT: ${{ github.workspace }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          if [ -L .story-gate ]; then echo "::error title=story-gate::.story-gate is a symlink in this PR; refusing to run"; exit 1; fi
+          mkdir -p "$RUNNER_TEMP/sg"
+          if ! git cat-file -e "$BASE:.story-gate/gate.py" 2>/dev/null; then
+            echo "::warning title=story-gate::story-gate is not on the base branch yet, so this PR is checked by human review only. It never runs code from the PR itself."
+            exit 0
+          fi
+          # Every module gate.py imports, from the base branch (a fixed list missed sg_trust.py and broke this job).
+          for f in $(git ls-tree --name-only "$BASE" .story-gate/ | sed -n 's#^\.story-gate/##p' | grep -E '^[A-Za-z0-9_]+\.py$|^config\.json$|^judge-calibration\.json$'); do
+            rm -f "$RUNNER_TEMP/sg/$f"
+            git show "$BASE:.story-gate/$f" > "$RUNNER_TEMP/sg/$f"
+          done
+          mkdir -p "$RUNNER_TEMP/sg/vendor"  # styles and logo for the HTML pages (data, never run)
+          for f in tabler.min.css viaknox-wordmark.svg; do
+            git show "$BASE:.story-gate/vendor/$f" > "$RUNNER_TEMP/sg/vendor/$f" 2>/dev/null || rm -f "$RUNNER_TEMP/sg/vendor/$f"
+          done
+          # Settings and judge calibration are read from the base branch's copies; the PR's own files stay as evidence.
+          export STORY_GATE_TRUSTED_DIR="$RUNNER_TEMP/sg"
+          python3 "$RUNNER_TEMP/sg/gate.py" ci-tests "$RUNNER_TEMP/sg-tests"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sg-tests
+          path: ${{ runner.temp }}/sg-tests
+          retention-days: 7
+  story-gate:
+    # Has the judge key; runs story-gate from the BASE branch and never executes PR code.
+    needs: tests
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: sg-tests
+          path: ${{ runner.temp }}/sg-tests
+        continue-on-error: true
+      - name: story gate
+        env:
+          BASE: origin/${{ github.event.pull_request.base.ref }}
+          SG_BASE_REF: ${{ github.event.pull_request.base.ref }}
+          SG_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          STORY_GATE_ROOT: ${{ github.workspace }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          GITHUB_TOKEN: ${{ github.token }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+          JUDGE_API_KEY: ${{ secrets.JUDGE_API_KEY }}
+        run: |
+          if [ -L .story-gate ]; then echo "::error title=story-gate::.story-gate is a symlink in this PR; refusing to run"; exit 1; fi
+          mkdir -p "$RUNNER_TEMP/sg"
+          if ! git cat-file -e "$BASE:.story-gate/gate.py" 2>/dev/null; then
+            echo "::warning title=story-gate::story-gate is not on the base branch yet, so this PR is checked by human review only. It never runs code from the PR itself."
+            exit 0
+          fi
+          # Every module gate.py imports, from the base branch (a fixed list missed sg_trust.py and broke this job).
+          for f in $(git ls-tree --name-only "$BASE" .story-gate/ | sed -n 's#^\.story-gate/##p' | grep -E '^[A-Za-z0-9_]+\.py$|^config\.json$|^judge-calibration\.json$'); do
+            rm -f "$RUNNER_TEMP/sg/$f"
+            git show "$BASE:.story-gate/$f" > "$RUNNER_TEMP/sg/$f"
+          done
+          mkdir -p "$RUNNER_TEMP/sg/vendor"  # styles and logo for the HTML pages (data, never run)
+          for f in tabler.min.css viaknox-wordmark.svg; do
+            git show "$BASE:.story-gate/vendor/$f" > "$RUNNER_TEMP/sg/vendor/$f" 2>/dev/null || rm -f "$RUNNER_TEMP/sg/vendor/$f"
+          done
+          # Settings and judge calibration are read from the base branch's copies; the PR's own files stay as evidence.
+          export STORY_GATE_TRUSTED_DIR="$RUNNER_TEMP/sg"
+          python3 "$RUNNER_TEMP/sg/gate.py" ci --tests "$RUNNER_TEMP/sg-tests"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: story-gate-validation
+          path: ${{ runner.temp }}/sg-report
+          if-no-files-found: ignore
+          retention-days: 14

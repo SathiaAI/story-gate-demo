@@ -1,0 +1,72 @@
+{
+ "version": 1,
+ "mode": "warn",
+ "enforce_points": [],
+ "accept_concerns": false,
+ "story_id_pattern": "[A-Z][A-Z0-9]+-[0-9]+",
+ "base_branch": "main",
+ "exempt_globs": [
+  ".story-gate/stories/*/*.md",
+  ".story-gate/stories/*/tests.json",
+  "docs/**/*.md",
+  "*.md"
+ ],
+ "test_command": "",
+ "junit_path": "",
+ "test_globs": [
+  "**/test_*.py",
+  "**/*_test.py",
+  "**/tests/**",
+  "**/test/**",
+  "**/__tests__/**",
+  "**/*.test.*",
+  "**/*.spec.*",
+  "**/*Test.java",
+  "**/*_test.go"
+ ],
+ "spec_files": [],
+ "thresholds": {
+  "pass": 0.7,
+  "concerns": 0.4
+ },
+ "judge": {
+  "provider": "openrouter",
+  "emulated_allow_pass": false,
+  "allow_self_judge_pass": false,
+  "max_chars": 90000
+ },
+ "approvers": [],
+ "reviewers": [],
+ "require_independent_review": true,
+ "sources": [],
+ "sinks": [
+  {
+   "type": "repo"
+  }
+ ],
+ "models": {
+  "intake": "small",
+  "context": "medium",
+  "tests": "medium",
+  "handoff": "medium",
+  "learnings": "small"
+ },
+ "model_tiers": {
+  "small": "cheapest fast model your client offers",
+  "medium": "mid-tier coding model (never frontier)"
+ },
+ "checkpoint": {
+  "every_edits": 10
+ },
+ "project_hooks_allowed": [],
+ "dashboard_issue": null,
+ "writing": {
+  "standard": "ste-style",
+  "target": 0.8,
+  "enforce": false,
+  "diagram_min_files": 5
+ },
+ "validation": {
+  "required": true
+ }
+}
